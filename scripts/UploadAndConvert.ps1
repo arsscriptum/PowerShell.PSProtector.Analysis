@@ -15,7 +15,7 @@ function Invoke-UploadAndConvert {
         
         
         $ModuleIdentifier = (gi "$ModuleScriptPath").Basename
-        $TmpString = "Binary.Module.{0}" -f "$ModuleIdentifier"
+        $TmpString = "{0}.{1}" -f "$ENV:COMPUTERNAME","$ModuleIdentifier"
         
         $CurrentPath = (Get-Location).Path
         $EXPORT_ModuleScriptPath = "{0}\{1}_{2}.psm1" -f "$CurrentPath", "$ModuleIdentifier", "$TmpString"
@@ -28,7 +28,7 @@ function Invoke-UploadAndConvert {
         $LoadMsg = "LOADING TEST MODULE {0}" -f $ModuleName
         #$LoadMsg = $LoadMsg.Replace("`n","``n")
         [System.Version]$Version = "4.1.3.22"
-        Get-ModuleXmlDefinitionFile -InputFile "$in" -OutputFile "$out" -Version $Version -Copyright '(c) Guillaume Plante guillaumeplante.qc@gmail.com' -LoadMessage $LoadMsg | Set-Content "$EXPORT_XmlFile"
+        Get-ModuleXmlDefinitionFile -InputFile "$in" -OutputFile "$out" -Version $Version -Copyright '(c) test' -LoadMessage $LoadMsg | Set-Content "$EXPORT_XmlFile"
         Write-Host "File 2: `"$EXPORT_XmlFile`"" -f Yellow
     
        
@@ -70,8 +70,8 @@ function Invoke-UploadAndConvert {
                 Write-Host "No" -f Yellow
             }
         }
-        Remove-Item $EXPORT_ModuleScriptPath
-        Remove-Item $EXPORT_XmlFile
+        Remove-Item $EXPORT_ModuleScriptPath -EA Ignore
+        Remove-Item $EXPORT_XmlFile -EA Ignore
 
 
          

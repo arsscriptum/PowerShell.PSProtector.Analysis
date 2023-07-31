@@ -72,8 +72,13 @@ function Download-FromPsProtectorCloud {
             $FTPDeleteRequest = [System.Net.FtpWebRequest]::Create($Remote)
             $FTPDeleteRequest.Credentials =  [System.Net.NetworkCredential]::new("demo", "rWf1+ccFx!p2a0e");
             $FTPDeleteRequest.Method = [System.Net.WebRequestMethods+Ftp]::DeleteFile
-            $FTPDeleteRequest = $FTPRequest.GetResponse()
-            Write-Host "Deleted `"$Remote`"" -f Magenta
+            $FTPResponse = $FTPDeleteRequest.GetResponse()
+            $Result = $FTPResponse.StatusCode
+            if('FileActionOK' -eq $Result){
+                Write-Host "Deleted `"$Remote`"" -f Magenta
+            }else{
+                Write-Host "Error Deleting `"$Remote`"" -f Red
+            }
         }
 
     }catch{
